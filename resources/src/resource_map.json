@@ -1,0 +1,17 @@
+{
+    "friendlyVersion": "dev_1.0",
+    "versionDefName": "SQUID_RESOURCES",
+
+    "media": [
+        {
+            "type":"png",
+            "defName":"IMAGE_SQUID",
+            "file":"images/tentacle-plus.png"
+        },
+        {
+            "type": "font",
+            "defName":"PF_AGORA_BLACK_24",
+            "file":"fonts/PFAgoraSlabPro-Black.ttf"
+        }
+    ]
+}
