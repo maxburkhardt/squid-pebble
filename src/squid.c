@@ -14,8 +14,10 @@ Window window;
 
 BmpContainer squid_container;
 
+// for fonts: try out Futura, Gill Sans
 TextLayer text_date_layer;
-TextLayer text_time_layer;
+TextLayer text_hour_layer;
+TextLayer text_minute_layer;
 
 void handle_init(AppContextRef ctx) {
     (void)ctx;
@@ -36,16 +38,23 @@ void handle_init(AppContextRef ctx) {
     text_layer_init(&text_date_layer, window.layer.frame);
     text_layer_set_text_color(&text_date_layer, GColorBlack);
     text_layer_set_background_color(&text_date_layer, GColorClear);
-    layer_set_frame(&text_date_layer.layer, GRect(35, 10, 80, 50));
-    text_layer_set_font(&text_date_layer, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_PF_AGORA_BLACK_24)));
+    layer_set_frame(&text_date_layer.layer, GRect(40, 10, 80, 50));
+    text_layer_set_font(&text_date_layer, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FUTURA_BOLD_30)));
     layer_add_child(&window.layer, &text_date_layer.layer);
 
-    text_layer_init(&text_time_layer, window.layer.frame);
-    text_layer_set_text_color(&text_time_layer, GColorBlack);
-    text_layer_set_background_color(&text_time_layer, GColorClear);
-    layer_set_frame(&text_time_layer.layer, GRect(35, 80, 80, 50));
-    text_layer_set_font(&text_time_layer, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_PF_AGORA_BLACK_24)));
-    layer_add_child(&window.layer, &text_time_layer.layer);
+    text_layer_init(&text_hour_layer, window.layer.frame);
+    text_layer_set_text_color(&text_hour_layer, GColorBlack);
+    text_layer_set_background_color(&text_hour_layer, GColorClear);
+    layer_set_frame(&text_hour_layer.layer, GRect(45, 40, 80, 60));
+    text_layer_set_font(&text_hour_layer, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FUTURA_BOLD_55)));
+    layer_add_child(&window.layer, &text_hour_layer.layer);
+
+    text_layer_init(&text_minute_layer, window.layer.frame);
+    text_layer_set_text_color(&text_minute_layer, GColorBlack);
+    text_layer_set_background_color(&text_minute_layer, GColorClear);
+    layer_set_frame(&text_minute_layer.layer, GRect(45, 90, 80, 60));
+    text_layer_set_font(&text_minute_layer, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FUTURA_BOLD_55)));
+    layer_add_child(&window.layer, &text_minute_layer.layer);
 }
 
 void handle_deinit(AppContextRef ctx) {
@@ -55,16 +64,22 @@ void handle_deinit(AppContextRef ctx) {
 
 
 void handle_minute_tick(AppContextRef ctx, PebbleTickEvent *t) {
-  (void)ctx;
+    (void)ctx;
+  
+    static char hour_text[] = "00";
+    static char minute_text[] = "00";
+    static char date_text[] = "00 00";
+  
+    string_format_time(date_text, sizeof(date_text), "%m/%e", t->tick_time);
+    /* if (date_text[0] == '0')
+        date_text[0] = ' '; */
+    text_layer_set_text(&text_date_layer, date_text);
+  
+    string_format_time(hour_text, sizeof(hour_text), "%H", t->tick_time);
+    text_layer_set_text(&text_hour_layer, hour_text);
 
-  static char time_text[] = "00:00";
-  static char date_text[] = "00 00";
-
-  string_format_time(date_text, sizeof(date_text), "%m %e", t->tick_time);
-  text_layer_set_text(&text_date_layer, date_text);
-
-  string_format_time(time_text, sizeof(time_text), "%R", t->tick_time);
-  text_layer_set_text(&text_time_layer, time_text);
+    string_format_time(minute_text, sizeof(minute_text), "%M", t->tick_time);
+    text_layer_set_text(&text_minute_layer, minute_text);
 }
 
 void pbl_main(void *params) {

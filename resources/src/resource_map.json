@@ -6,12 +6,17 @@
         {
             "type":"png",
             "defName":"IMAGE_SQUID",
-            "file":"images/tentacle-plus.png"
+            "file":"images/tentacle-back.png"
         },
         {
             "type": "font",
-            "defName":"PF_AGORA_BLACK_24",
-            "file":"fonts/PFAgoraSlabPro-Black.ttf"
+            "defName":"FUTURA_BOLD_30",
+            "file":"fonts/Futura.ttf"
+        },
+        {
+            "type": "font",
+            "defName":"FUTURA_BOLD_55",
+            "file":"fonts/Futura.ttf"
         }
     ]
 }
